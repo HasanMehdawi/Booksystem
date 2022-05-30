@@ -1,0 +1,119 @@
+﻿@model vmAuther
+@{
+    Layout = "~/Views/Shared/layoutPage.cshtml";
+}
+<script>
+
+    $(document).ready(function () {
+        $(".Edit").click(function () {
+            debugger
+            var Auther_id = $(this).parent().parent().find(".Auther_id").text()
+            $.ajax({
+                type: 'get',
+                url: "/BookStoreSystem/auther/edit?id=" + Auther_id,
+                success: function (data) {
+                    debugger;
+                    console.log(data)
+                    $("#auther_id").val(Auther_id)
+                    $("#first_Name").val(data.fName)
+                    $("#Last_Name").val(data.lName)
+                },
+                error: function () {
+                    alert("Error")
+                }
+            })
+            $("#update").show()
+            $("#save").hide()
+            $("#AddAuther").modal("show");
+
+        })
+        $(".exit").click(function () {
+            $("#update").hide()
+            $("#save").show()
+        })
+    })
+</script>
+<div class="row" style=" background-color: #2b2727; padding: 2px; text-align:center ">
+    <div class="col-lg-12" style=" color:white; font-size:30px;font-weight:bold;margin-bottom:5px; ">
+        Authors
+    </div>
+
+</div>
+
+<div class="row" style="margin:5px;">
+    <div class="col-lg-2">
+        <button class="btn btn-primary" style=" padding: 5px,10px;" data-target="#AddAuther" data-toggle="modal">New Auther</button>
+    </div>
+</div>
+<div class="modal fade" id="AddAuther" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close exit" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Auther</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="authors.Id" id="auther_id" />
+                    <div class="form-group">
+                        <lable for="first_Name">First Name</lable>
+                        <input type="text" class="form-control" placeholder="First Name" id="first_Name" asp-for="authors.FName" />
+                    </div>
+                    <div class="form-group">
+                        <lable for="Last_Name">Last Name</lable>
+                        <input type="text" class="form-control" placeholder="Last Name" id="Last_Name" asp-for="authors.LName" />
+                    </div>
+                    <div class="form-group">
+                        <lable for="Nationality">Nationality</lable>
+                        <select asp-items='new SelectList(Model.linationality,"Id","Name")' asp-for="authors.National_Id" class="form-control" id="Nationality"></select>
+                    </div>
+                    <div class="form-group">
+                        <input type="file" asp-for="authors.Image" id="img" style="display:none" />
+                        <label class="btn btn-primary" for="img">UploadImage</label>
+                    </div>
+                    <div class="row" style="margin-top:5%">
+
+                        <input type="submit" value="Update" asp-action="update" class="btn btn-primary exit" style="display:none" id="update" />
+
+
+
+                        <input type="submit" value="Save" asp-action="save" class="btn btn-primary" id="save" />
+
+
+                        <button class="btn btn-primary exit" data-dismiss="modal">Close</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row" style="margin:5px;">
+    <div class="col-lg-12">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Image</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Authors item in Model.liauther)
+                {
+                    <tr>
+                        <td class="Auther_id">@item.Id</td>
+                        <td>@item.FName</td>
+                        <td><img src="@item.ImagePath" style="width:64px" /></td>
+                        <td><a asp-action="delete" asp-route-id=@item.Id>Delete</a>|<a class="Edit">Edit</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+

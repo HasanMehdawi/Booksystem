@@ -1,0 +1,110 @@
+﻿@model vmCategory
+@{
+    Layout = "~/Views/Shared/layoutPage.cshtml";
+}
+<script>
+
+    $(document).ready(function () {
+        $(".Edit").click(function () {
+            debugger
+            var cat_id = $(this).parent().parent().find(".category_id").text()
+            $.ajax({
+                type: 'get',
+                url: "/BookStoreSystem/category/edit?id=" + cat_id,
+                success: function (data) {
+                    debugger;
+                    $("#category_id").val(category_id)
+                    $("#Category_Code").val(data.category_Code)
+                    $("#Category_Name").val(data.category_Name)
+                },
+                error: function () {
+                    alert("Error")
+                }
+            })
+            $("#update").show()
+            $("#save").hide()
+            $("#AddCategory").modal("show");
+
+        })
+        $(".exit").click(function () {
+            $("#update").hide()
+            $("#save").show()
+        })
+    })
+</script>
+
+<div class="row" style=" background-color: #2b2727; padding: 2px; text-align:center ">
+    <div class="col-lg-12" style=" color:white; font-size:30px;font-weight:bold;margin-bottom:5px; ">
+        Category
+    </div>
+
+</div>
+<div class="row" style="margin:5px;">
+    <div class="col-lg-2">
+        <button class="btn btn-primary" style=" padding: 5px,10px;" data-target="#AddCategory" data-toggle="modal">New Category</button>
+    </div>
+</div>
+<div class="modal fade" id="AddCategory" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close exit" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Category</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    <input type="hidden" asp-for="category.id" id="category_id" />
+                    <div class="form-group">
+                        <lable for="Category_Code">Category Code</lable>
+                        <input type="text" class="form-control" placeholder="Category Code" id="Category_Code" asp-for="category.Category_Code" />
+                    </div>
+                    <div class="form-group">
+                        <lable for="Category_Name">Category Name</lable>
+                        <input type="text" class="form-control" placeholder="Category Name" id="Category_Name" asp-for="category.Category_Name" />
+                    </div>
+                    <div class="row" style="margin-top:5%">
+
+                        <input type="submit" value="Update" asp-action="Update" class="btn btn-primary exit" id="update" style="display:none" />
+
+
+
+
+                        <input type="submit" value="Save" asp-action="save" id="save" class="btn btn-primary" />
+
+
+                        <button class="btn btn-primary exit" data-dismiss="modal">Close</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="margin:5px;">
+    <div class="col-lg-12">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Category Code</th>
+                    <th>Category Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Category item in Model.licategory)
+                {
+                    <tr>
+                        <td class="category_id">@item.id</td>
+                        <td>@item.Category_Code</td>
+                        <td>@item.Category_Name</td>
+                        <td><a asp-action="delete" asp-route-id=@item.id>Delete</a> | <a class="Edit">Edit</a></td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

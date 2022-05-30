@@ -1,0 +1,68 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<Application> signinmanager
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>View</title>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <link href="~/css/StyleSheet.css" rel="stylesheet" />
+    <link href="~/lib/twitter-bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <script src="~/lib/twitter-bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/js/JavaScript.js"></script>
+    @RenderSection("Head", false)
+</head>
+<body>
+    <nav class="navbar navbar-inverse sidebar" role="navigation">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand active" href="#">Book Store</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    @if (signinmanager.IsSignedIn(User))
+                    {
+                        <li><a asp-action="Index" asp-controller="Category">Category</a></li>
+                        <li><a asp-action="Index" asp-controller="Auther">Authors</a></li>
+                        <li><a asp-action="Index" asp-controller="Nationality">Nationality</a></li>
+                        <li><a asp-action="Index" asp-controller="Book">Books</a></li>
+                        <li><a asp-controller="Account" asp-action="NewRole">Add Role</a></li>
+                        <li><a asp-controller="Account" asp-action="LogOut">Logout <span class="glyphicon glyphicon-log-out" style="margin-left:5px"></span></a></li>
+
+                    }
+                    else
+                    {
+
+                        <li><a asp-controller="Account" asp-action="index">Sign Up <span class="glyphicon glyphicon-user" style="margin-left:5px"></span></a></li>
+
+
+                        <li><a asp-controller="Account" asp-action="login">Login <span class="glyphicon glyphicon-log-in" style="margin-left:5px"></span></a></li>
+
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="main">
+        @RenderBody()
+    </div>
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,72 @@
+﻿@model vmsignup
+@{
+    Layout = "~/Views/Shared/layoutPage.cshtml";
+}
+<div class="row" style=" background-color: #2b2727; padding: 2px; text-align:center ">
+    <div class="col-lg-12" style=" color:white; font-size:30px;font-weight:bold;margin-bottom:5px; ">
+        SignUp
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-lg-offset-2">
+        <form method="post">
+            <div class="row" style=" margin-top:5px">
+                <div class="form-group">
+                    <div class="col-lg-6">
+                        <span>Name</span>
+                        <input type="text" class="form-control" asp-for="signup.Name" />
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="row" style=" margin-top:5px">
+                <div class="form-group">
+                    <div class="col-lg-6">
+                        <span>Email</span>
+                        <input type="text" class="form-control" asp-for="signup.Email" />
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="row" style=" margin-top:5px">
+                <div class="form-group">
+                    <div class="col-lg-6">
+                        <span>Password</span>
+                        <input type="password" class="form-control" asp-for="signup.Password" />
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="row" style=" margin-top:5px">
+                <div class="form-group">
+                    <div class="col-lg-6">
+                        <span>Confirm Password</span>
+                        <input type="password" class="form-control" asp-for="signup.ConfirmPassword" />
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="row" style=" margin-top:5px">
+                <div class="form-group">
+                    <div class="col-lg-6">
+                        <span>Role</span>
+                        <select asp-items='new SelectList(Model.lirole,"Id","Name")' asp-for="signup.Role_id" class="form-control"></select>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row" style=" margin-top:5px">
+                <div class="col-lg-12">
+                    <input type="submit" value="Create Account" class="btn btn-primary" asp-action="createAccount" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

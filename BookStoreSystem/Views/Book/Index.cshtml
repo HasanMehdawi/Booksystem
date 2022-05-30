@@ -1,0 +1,146 @@
+﻿@model vmbook
+@{
+    Layout = "~/Views/Shared/layoutPage.cshtml";
+}
+<script>
+
+    $(document).ready(function () {
+        $(".Edit").click(function () {
+            debugger
+            var B_id = $(this).parent().parent().find(".bookId").text()
+            $.ajax({
+                type: 'get',
+                url: "/BookStoreSystem/book/edit?id=" + B_id,
+                success: function (data) {
+                    debugger;
+                    
+                    $("#book_id").val(B_id)
+                    $("#Book_Title").val(data.bookTitle)
+                    $("#Year").val(data.year)
+                    $("#Price").val(data.price)
+                    $("#category").val(data.category_Id)
+                    $("#Auther").val(data.authors_ID)
+                    $("#Stock").val(data.stock)
+                }, 
+                error: function () {
+                    alert("Error")
+                }
+            })
+            $("#update").show()
+            $("#save").hide()
+            $("#Book_modal").modal("show");
+
+        })
+        $(".exit").click(function () {
+            $("#update").hide()
+            $("#save").show()
+        })
+    })
+</script>
+
+<div class="row" style=" background-color: #2b2727; padding: 2px; text-align:center ">
+    <div class="col-lg-12" style=" color:white; font-size:30px;font-weight:bold;margin-bottom:5px; ">
+        Category
+    </div>
+
+</div>
+<div class="row" style="margin:5px;">
+    <div class="col-lg-2">
+        <button class="btn btn-primary" style=" padding: 5px,10px;" data-target="#Book_modal" data-toggle="modal">Book</button>
+    </div>
+</div>
+<div class="modal fade" id="Book_modal" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close exit" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Books</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="book.Id" id="book_id" />
+                    <div class="form-group">
+                        <lable for="Book_Title">Book Title</lable>
+                        <input type="text" class="form-control" placeholder="Book Title" id="Book_Title" asp-for="book.BookTitle" />
+                    </div>
+                    <div class="form-group">
+                        <label for="Year">Year</label>
+                        <input type="text" class="form-control" placeholder="Year" id="Year" asp-for="book.Year" />
+                    </div>
+                    <div class="form-group">
+                        <label for="Price">Price</label>
+                        <input type="text" class="form-control" placeholder="Price" id="Price" asp-for="book.Price" />
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select asp-items='new SelectList(Model.liCategory,"id","Category_Name")' asp-for="book.category_Id" class="form-control" id="category"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Auther</label>
+                        <select asp-items='new SelectList(Model.liAuthors,"Id","FName")' asp-for="book.authors_ID" class="form-control" id="Auther"></select>
+                    </div>
+                    <div class="form-group">
+                        <input type="file" asp-for="book.Image" id="img" style="display:none" />
+                        <label class="btn btn-primary" for="img">UploadImage</label>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="Stock">Stock</label>
+                        <input type="text" class="form-control" asp-for="book.Stock" placeholder="Stock" id="Stock" />
+                    </div>
+                    <div class="row" style="margin-top:5%">
+
+                        <input type="submit" value="Update" asp-action="Update" id="update" class="btn btn-primary exit" style="display:none" />
+
+
+
+
+                        <input type="submit" value="Save" asp-action="save" id="save" class="btn btn-primary" />
+
+
+                        <button class="btn btn-primary exit" data-dismiss="modal">Close</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="margin:5px;">
+    <div class="col-lg-12">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Book Title</th>
+                    <th>Cover</th>
+                    <th>Year</th>
+                    <th>Price</th>
+                    <th>Category</th>
+                    <th>Auther</th>
+                    <th>Stock</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Book item in Model.liBook)
+                {
+                <tr>
+                    <td class="bookId">@item.Id</td>
+                    <td>@item.BookTitle</td>
+                    <td><img src="@item.ImagePath" style="width:65px"/></td>
+                    <td>@item.Year</td>
+                    <td>@item.Price</td>
+                    <td>@item.category.Category_Name</td>
+                    <td>@item.authors.FName</td>
+                    <td>@item.Stock</td>
+                    <td><a asp-action="delete" asp-route-id=@item.Id>Delete</a> | <a class="Edit">Edit</a></td>
+                </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
